@@ -19,12 +19,20 @@ DISTRIBUTIONS = [
 module Helpers
   module_function
   def binary_gemspec(platform = Gem::Platform.local)
+    if platform.os == "darwin" && platform.version.to_i > 16
+      platform = platform.dup
+      platform.version = "16"
+    end
     gemspec = eval(File.read 'libv8.gemspec')
     gemspec.platform = platform
     gemspec
   end
 
   def binary_gem_name(platform = Gem::Platform.local)
+    if platform.os == "darwin" && platform.version.to_i > 16
+      platform = platform.dup
+      platform.version = "16"
+    end
     File.basename binary_gemspec(platform).cache_file
   end
 end
